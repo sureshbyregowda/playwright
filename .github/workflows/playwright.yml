@@ -48,7 +48,7 @@ jobs:
     - name: Run Playwright tests
       run: |
           if [ "${{ inputs.testFile }}" ]; then
-            npx playwright test "${{ inputs.testFile }} --project="${{ inputs.browser }}"
+            npx playwright test "${{ inputs.testFile }}" --project="${{ inputs.browser }}"
 
           elif [ "${{ inputs.testType }}" = "smoke" ]; then
             npx playwright test --grep "@smoke" --project="${{ inputs.browser }}"
