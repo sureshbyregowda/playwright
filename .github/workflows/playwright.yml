@@ -7,6 +7,11 @@ on:
 
   workflow_dispatch:
     inputs:
+      testFile:
+        description: "Playwright test file to execute"
+        required: false
+        default: ""
+        type: string      
       testType:
         description: "Test Type"
         required: true
@@ -32,7 +37,12 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test --grep "@${{ inputs.testType }}"
+      run: |
+          if [ -n "${{ inputs.testFile }}" ]; then
+            npx playwright test "${{ inputs.testFile }}"
+          else
+            npx playwright test --grep "@${{ inputs.testType }}"
+          fi    
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
