@@ -38,7 +38,7 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: |
-          if [ -n "${{ inputs.testFile }}" ]; then
+          if [ "${{ inputs.testFile }}" ]; then
             npx playwright test "${{ inputs.testFile }}"
 
           elif [ "${{ inputs.testType }}" = "smoke" ]; then
@@ -47,6 +47,9 @@ jobs:
           elif [ "${{ inputs.testType }}" = "regression" ]; then
             npx playwright test --grep "@regression"
 
+          elif [ "${{ inputs.testType }}" = "all" ]; then
+            npx playwright test
+            
           else
             npx playwright test
           fi            
