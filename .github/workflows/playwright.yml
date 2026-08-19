@@ -40,9 +40,20 @@ jobs:
       run: |
           if [ -n "${{ inputs.testFile }}" ]; then
             npx playwright test "${{ inputs.testFile }}"
+
+          if [ "${{ inputs.testType }}" = "smoke" ]; then
+            npx playwright test --grep "@smoke"
+
+          elif [ "${{ inputs.testType }}" = "regression" ]; then
+            npx playwright test --grep "@regression"
+
+          elif [ "${{ inputs.testType }}" = "all" ]; then
+            npx playwright test tests/sample.spec.ts
+
           else
-            npx playwright test --grep "@${{ inputs.testType }}"
-          fi    
+            npx playwright test
+          fi            
+ 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
