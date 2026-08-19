@@ -41,7 +41,7 @@ jobs:
           if [ -n "${{ inputs.testFile }}" ]; then
             npx playwright test "${{ inputs.testFile }}"
 
-          if [ "${{ inputs.testType }}" = "smoke" ]; then
+          elif [ "${{ inputs.testType }}" = "smoke" ]; then
             npx playwright test --grep "@smoke"
 
           elif [ "${{ inputs.testType }}" = "regression" ]; then
