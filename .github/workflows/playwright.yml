@@ -6,6 +6,17 @@ on:
     branches: [ main, master ]
 
   workflow_dispatch:
+    inputs:
+      testType:
+        description: "Test Type"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - smoke
+          - regression
+
     
 jobs:
   test:
@@ -21,7 +32,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --grep "@${{ inputs.testType }}"
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
