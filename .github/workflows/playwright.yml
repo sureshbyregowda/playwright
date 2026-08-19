@@ -21,6 +21,15 @@ on:
           - all
           - smoke
           - regression
+      browser:
+        description: "Browser"
+        required: true
+        default: "chromium"
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit          
 
     
 jobs:
@@ -39,17 +48,17 @@ jobs:
     - name: Run Playwright tests
       run: |
           if [ "${{ inputs.testFile }}" ]; then
-            npx playwright test "${{ inputs.testFile }}"
+            npx playwright test "${{ inputs.testFile }} --project="${{ inputs.browser }}"
 
           elif [ "${{ inputs.testType }}" = "smoke" ]; then
-            npx playwright test --grep "@smoke"
+            npx playwright test --grep "@smoke" --project="${{ inputs.browser }}"
 
           elif [ "${{ inputs.testType }}" = "regression" ]; then
-            npx playwright test --grep "@regression"
+            npx playwright test --grep "@regression" --project="${{ inputs.browser }}"
 
           elif [ "${{ inputs.testType }}" = "all" ]; then
-            npx playwright test
-            
+            npx playwright test --project="${{ inputs.browser }}"
+
           else
             npx playwright test
           fi            
